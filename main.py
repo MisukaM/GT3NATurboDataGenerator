@@ -191,10 +191,10 @@ while True:
     #aspiration input handling. na engines get an additional 10% boost, to compensate for them not having default turbos that boost values, intended to level out na/turbo engines.
     while True:
         try:
-            default_aspiration = input("Default Aspiration: (NA/TURBO) ")
+            default_aspiration = input("Default Aspiration: (NA/TURBO/SC) ")
             if default_aspiration.lower() == "na":
                 aspiration_multiplier = 1.1
-            elif default_aspiration.lower() == "turbo":
+            elif default_aspiration.lower() == "turbo" or default_aspiration.lower() == "sc":
                 aspiration_multiplier = 1
             else:
                 print("Invalid aspiration input.")
@@ -264,8 +264,8 @@ while True:
     print(f"{'BoostGaugeLimit':<15} {'Boost1':<6} {'PeakRPM1':<8} {'SpoolRate1':<10} {'Boost2':<6} {'PeakRPM2':<8} {'SpoolRate2':<10} {'Torque1':<7} {'Torque2':<7}")
     print(f"{round(BoostGaugeLimit * 4):<15} {round((Boost1 * 4) * 0.35):<6} {round(maxrpm / 2.25):<8} {round((SpoolRate1 / 2.8) * 1.1):<10} {Boost2_Stage4:<6} {round(maxrpm / 1.21):<8} {round(SpoolRate2 / 3.3):<10} {round((TorqueModifier * Turbo_Stage4_twin_torque1) * base_performance_figure):<7} {round((TorqueModifier2 * Turbo_Stage4_twin_torque2) * base_performance_figure):<7}")
     print()
-    if aspiration_multiplier == 1:
-        print("NA-Tune data is only outputted for NA cars.")
+    if default_aspiration.lower() == "turbo":
+        print("NA-Tune data is only outputted for NA/SC cars.")
     else:
         print(f"NA-Tune 1: ")   
         print(f"{'Torque1':<7} {'Torque2':<7}")
