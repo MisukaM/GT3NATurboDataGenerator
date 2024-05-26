@@ -3,14 +3,14 @@ A program to generate Turbine Kit/NA Tune data for Gran Turismo 3 (applicable to
 
 The program is essentially finished, although it's still probably going to need some fine-tuning with the modifiers. Until I deem the calculations to be perfect, I wont put out an executable for it.
 Currently accepted engine inputs are;
-L3, L4, L5, L6, V6, V8, V10, V12, VR6, BOXER4, BOXER6, W12, ROTOR2, ROTOR3, ROTOR4.
+L1, L2, L3, L4, L5, L6, V6, V8, V10, V12, V16, VR6, BOXER2, BOXER4, BOXER6, W12, ROTOR2, ROTOR3, ROTOR4.
 Accepted valvetrain inputs;
-SOHC, DOHC, OHV, ROTARY.
+SOHC, DOHC, QOHC, OHC, OHV, ROTARY.
 
 Peak power inputs can be an estimate, or if you want the precise value, you can use Silentwarior112's Torque Curve Tool for accurate inputs. It accepts decimal values as well, and values only between 1 and 1500.
-Peak RPM inputs should be the engine's max RPM / 100, i.e max RPM of 7500 / 100 = 75. They also need to be more than 1 and less than 115.
+Peak RPM inputs should be the engine's max RPM / 100, i.e max RPM of 7500 / 100 = 75. They also need to be more than 1 and less than or equal to 150.
 
-Displacement inputs should currently be between 600 and 8000. Additionally, do not include the "cc" in the input, i.e "7997cc".
+Displacement inputs should currently be between 350 and 8300. Additionally, do not include the "cc" in the input, i.e "7997cc".
 
 Default aspiration obviously should be the engine's default aspiration.
 Accepted aspiration inputs:
@@ -18,3 +18,5 @@ NA, TURBO, SC
 
 After all the inputs, the program will take the inputs, calculate values from them, and output the turbine kit/NA tune part data.
 If you want to modify the modifiers for pretty much anything, you can fairly simply edit the code to do so.
+
+Also thanks to Sal_89 for initially adding the GT4-specific engine/valvetrain types.
