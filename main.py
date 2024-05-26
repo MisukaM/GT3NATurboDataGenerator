@@ -19,6 +19,8 @@ Turbo_Stage3_single_torque1 = 0.79
 Turbo_Stage3_single_torque2 = 2.01
 Turbo_Stage4_single_torque1 = 0.12
 Turbo_Stage4_single_torque2 = 2.74
+Turbo_Stage5_single_torque1 = 0.45
+Turbo_Stage5_single_torque2 = 2.35
 Turbo_Stage1_twin_torque1 = 1.52
 Turbo_Stage1_twin_torque2 = 1.29
 Turbo_Stage2_twin_torque1 = 1.49
@@ -27,6 +29,8 @@ Turbo_Stage3_twin_torque1 = 1.16
 Turbo_Stage3_twin_torque2 = 2.09
 Turbo_Stage4_twin_torque1 = 0.65
 Turbo_Stage4_twin_torque2 = 2.32
+Turbo_Stage5_twin_torque1 = 0.89
+Turbo_Stage5_twin_torque2 = 2.08
 NA_Stage1_base_torque1 = 1.40
 NA_Stage1_base_torque2 = 1.31
 NA_Stage2_base_torque1 = 1.36
@@ -35,6 +39,8 @@ NA_Stage3_base_torque1 = 1.25
 NA_Stage3_base_torque2 = 1.78
 #engine modifiers
 ENGINE_OPTIONS = {
+    "L1": 0.95,
+    "L2": 0.965,
     "L3": 0.98,
     "L4": 1,
     "L5": 1.01,
@@ -43,7 +49,9 @@ ENGINE_OPTIONS = {
     "V8": 1.0325,
     "V10": 1.35,
     "V12": 1.0385,
+    "V16": 1.0395,
     "VR6": 1.029,
+    "BOXER2": 0.975,
     "BOXER4": 1.02,
     "BOXER6": 1.031,
     "W12": 1.0387,
@@ -55,15 +63,17 @@ ENGINE_OPTIONS = {
 VALVETRAIN_OPTIONS = {
     "SOHC": 1,
     "DOHC": 1.03,
+    "QOHC": 1.01,
+    "OHC": 0.98,
     "OHV": 0.96,
     "ROTARY": 1.02
 }
 
 #chatgpt formula for displacement
 def transform_value(x):
-    # Normalize the input range 600 to 8000
-    x_min = 600
-    x_max = 8000
+    # Normalize the input range 350 to 8300
+    x_min = 350
+    x_max = 8300
     x_normalized = (x - x_min) / (x_max - x_min)
     
     # Apply a logarithmic transformation
@@ -161,7 +171,7 @@ while True:
     while True:
         try:
             maxrpm = int(input("Peak RPM: "))
-            if maxrpm <= 0 or maxrpm > 115:
+            if maxrpm <= 0 or maxrpm > 150:
                 print("Invalid RPM figure.")
                 continue
             break
@@ -172,8 +182,8 @@ while True:
     #disp. input handling
     while True:
         try:
-            displacement = float(input("Displacement: (600-8000) "))
-            if displacement < 600 or displacement > 8000:
+            displacement = float(input("Displacement: (350-8300) "))
+            if displacement < 350 or displacement > 8300:
                 print("Disp. figure out of bounds.")
                 continue
             else:
@@ -229,6 +239,7 @@ while True:
     Boost2_Stage2 = round((BoostGaugeLimit * 2) / 1.4) - round(((Boost1 * 2) / 2) * 0.55)
     Boost2_Stage3 = round((BoostGaugeLimit * 3) / 1.4) - round(((Boost1 * 3) / 2.5) * 0.65)
     Boost2_Stage4 = round(BoostGaugeLimit * 4) - round((Boost1 * 4) * 0.35)
+    Boost2_Stage5 = round((BoostGaugeLimit * 4) / 1.1) - round((Boost1 * 4) * 0.3)
     TorqueModifier = int(100)
     TorqueModifier2 = int(100)
     
@@ -248,6 +259,10 @@ while True:
     print(f"{'BoostGaugeLimit':<15} {'Boost1':<6} {'PeakRPM1':<8} {'SpoolRate1':<10} {'Torque1':<7} {'Torque2':<7}")
     print(f"{round(BoostGaugeLimit * 4):<15} {round(Boost1 * 4):<6} {maxrpm:<8} {round(SpoolRate1 / 4.9):<10} {round((TorqueModifier * Turbo_Stage4_single_torque1) * base_performance_figure):<7} {round((TorqueModifier2 * Turbo_Stage4_single_torque2) * base_performance_figure):<7}")
     print()
+    print(f"Turbo 5: (Original, SINGLE)")
+    print(f"{'BoostGaugeLimit':<15} {'Boost1':<6} {'PeakRPM1':<8} {'SpoolRate1':<10} {'Torque1':<7} {'Torque2':<7}")
+    print(f"{round((BoostGaugeLimit * 4) / 1.1):<15} {round((Boost1 * 4) / 1.1):<6} {maxrpm:<8} {round(SpoolRate1 / 4):<10} {round((TorqueModifier * Turbo_Stage5_single_torque1) * base_performance_figure):<7} {round((TorqueModifier2 * Turbo_Stage5_single_torque2) * base_performance_figure):<7}")
+    print()
     print(f"Turbo 1: (TWIN)")
     print(f"{'BoostGaugeLimit':<15} {'Boost1':<6} {'PeakRPM1':<8} {'SpoolRate1':<10} {'Boost2':<6} {'PeakRPM2':<8} {'SpoolRate2':<10} {'Torque1':<7} {'Torque2':<7}")
     print(f"{BoostGaugeLimit:<15} {round(Boost1 * 0.35):<6} {round(maxrpm / 4.5):<8} {round(SpoolRate1 * 1.1):<10} {Boost2_Stage1:<6} {round(maxrpm / 2.7):<8} {SpoolRate2:<10} {round((TorqueModifier * Turbo_Stage1_twin_torque1) * base_performance_figure):<7} {round((TorqueModifier2 * Turbo_Stage1_twin_torque2) * base_performance_figure):<7}")
@@ -263,6 +278,10 @@ while True:
     print(f"Turbo 4: (TWIN)")
     print(f"{'BoostGaugeLimit':<15} {'Boost1':<6} {'PeakRPM1':<8} {'SpoolRate1':<10} {'Boost2':<6} {'PeakRPM2':<8} {'SpoolRate2':<10} {'Torque1':<7} {'Torque2':<7}")
     print(f"{round(BoostGaugeLimit * 4):<15} {round((Boost1 * 4) * 0.35):<6} {round(maxrpm / 2.25):<8} {round((SpoolRate1 / 2.8) * 1.1):<10} {Boost2_Stage4:<6} {round(maxrpm / 1.21):<8} {round(SpoolRate2 / 3.3):<10} {round((TorqueModifier * Turbo_Stage4_twin_torque1) * base_performance_figure):<7} {round((TorqueModifier2 * Turbo_Stage4_twin_torque2) * base_performance_figure):<7}")
+    print()
+    print(f"Turbo 5: (Original, TWIN)")
+    print(f"{'BoostGaugeLimit':<15} {'Boost1':<6} {'PeakRPM1':<8} {'SpoolRate1':<10} {'Boost2':<6} {'PeakRPM2':<8} {'SpoolRate2':<10} {'Torque1':<7} {'Torque2':<7}")
+    print(f"{round((BoostGaugeLimit * 4) / 1.1):<15} {round((Boost1 * 4) * 0.3):<6} {round(maxrpm / 2.30):<8} {round((SpoolRate1 / 2.3) * 1.1):<10} {Boost2_Stage5:<6} {round(maxrpm / 1.27):<8} {round(SpoolRate2 / 2.8):<10} {round((TorqueModifier * Turbo_Stage5_twin_torque1) * base_performance_figure):<7} {round((TorqueModifier2 * Turbo_Stage5_twin_torque2) * base_performance_figure):<7}")
     print()
     if default_aspiration.lower() == "turbo":
         print("NA-Tune data is only outputted for NA/SC cars.")
