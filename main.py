@@ -11,62 +11,62 @@ Base_PeakRPM2 = 35
 Base_SpoolRate2 = 90
 #stage modifiers
 #torque1 is lowrpm, 2 highrpm
-Turbo_Stage1_single_torque1 = 1.55
-Turbo_Stage1_single_torque2 = 1.22
-Turbo_Stage2_single_torque1 = 1.34
-Turbo_Stage2_single_torque2 = 1.49
-Turbo_Stage3_single_torque1 = 0.79
-Turbo_Stage3_single_torque2 = 2.01
+Turbo_Stage1_single_torque1 = 1.35
+Turbo_Stage1_single_torque2 = 1.20
+Turbo_Stage2_single_torque1 = 1.28
+Turbo_Stage2_single_torque2 = 1.30
+Turbo_Stage3_single_torque1 = 0.90
+Turbo_Stage3_single_torque2 = 1.62
 Turbo_Stage4_single_torque1 = 0.12
-Turbo_Stage4_single_torque2 = 2.74
+Turbo_Stage4_single_torque2 = 2.08
 Turbo_Stage5_single_torque1 = 0.45
-Turbo_Stage5_single_torque2 = 2.35
-Turbo_Stage1_twin_torque1 = 1.52
-Turbo_Stage1_twin_torque2 = 1.29
-Turbo_Stage2_twin_torque1 = 1.49
-Turbo_Stage2_twin_torque2 = 1.50
-Turbo_Stage3_twin_torque1 = 1.16
-Turbo_Stage3_twin_torque2 = 2.09
-Turbo_Stage4_twin_torque1 = 0.65
-Turbo_Stage4_twin_torque2 = 2.32
-Turbo_Stage5_twin_torque1 = 0.89
-Turbo_Stage5_twin_torque2 = 2.08
-NA_Stage1_base_torque1 = 1.40
-NA_Stage1_base_torque2 = 1.31
-NA_Stage2_base_torque1 = 1.36
-NA_Stage2_base_torque2 = 1.44
-NA_Stage3_base_torque1 = 1.25
-NA_Stage3_base_torque2 = 1.78
+Turbo_Stage5_single_torque2 = 1.85
+Turbo_Stage1_twin_torque1 = 1.38
+Turbo_Stage1_twin_torque2 = 1.19
+Turbo_Stage2_twin_torque1 = 1.31
+Turbo_Stage2_twin_torque2 = 1.285
+Turbo_Stage3_twin_torque1 = 1.10
+Turbo_Stage3_twin_torque2 = 1.59
+Turbo_Stage4_twin_torque1 = 0.68
+Turbo_Stage4_twin_torque2 = 1.85
+Turbo_Stage5_twin_torque1 = 0.80
+Turbo_Stage5_twin_torque2 = 1.72
+NA_Stage1_base_torque1 = 1.20
+NA_Stage1_base_torque2 = 1.27
+NA_Stage2_base_torque1 = 1.22
+NA_Stage2_base_torque2 = 1.38
+NA_Stage3_base_torque1 = 1.19
+NA_Stage3_base_torque2 = 1.54
 #engine modifiers
 ENGINE_OPTIONS = {
-    "L1": 0.95,
-    "L2": 0.965,
-    "L3": 0.98,
-    "L4": 1,
-    "L5": 1.01,
-    "L6": 1.03,
-    "V6": 1.028,
-    "V8": 1.0325,
-    "V10": 1.35,
-    "V12": 1.0385,
-    "V16": 1.0395,
-    "VR6": 1.029,
-    "BOXER2": 0.975,
-    "BOXER4": 1.02,
-    "BOXER6": 1.031,
-    "W12": 1.0387,
-    "ROTOR2": 1.015,
-    "ROTOR3": 1.0285,
-    "ROTOR4": 1.033
+    "L1": 1,
+    "L2": 1.008,
+    "L3": 1.013,
+    "L4": 1.019,
+    "L5": 1.025,
+    "L6": 1.030,
+    "V6": 1.029,
+    "V8": 1.034,
+    "V10": 1.0355,
+    "V12": 1.036,
+    "V16": 1.038,
+    "VR6": 1.0295,
+    "BOXER2": 1.01,
+    "BOXER4": 1.021,
+    "BOXER6": 1.0295,
+    "W12": 1.0375,
+    "ROTOR2": 1.01,
+    "ROTOR3": 1.015,
+    "ROTOR4": 1.02
 }
 #valvetrain modifiers
 VALVETRAIN_OPTIONS = {
-    "SOHC": 1,
-    "DOHC": 1.03,
-    "QOHC": 1.01,
-    "OHC": 0.98,
-    "OHV": 0.96,
-    "ROTARY": 1.02
+    "SOHC": 1.03,
+    "DOHC": 1.06,
+    "QOHC": 1.02,
+    "OHC": 1.01,
+    "OHV": 1,
+    "ROTARY": 1.01
 }
 
 #chatgpt formula for displacement
@@ -81,8 +81,8 @@ def transform_value(x):
     x_transformed = math.log1p(k * x_normalized)  # log1p(x) is log(1 + x)
     
     # Scale and shift to the range a to b
-    y_min = 1.10
-    y_max = 0.60
+    y_min = 1.25
+    y_max = 1
     y = y_min + (y_max - y_min) * x_transformed / math.log1p(k)
     
     return y
@@ -97,7 +97,7 @@ def engine_tuning_factor(power, displacement):
     power_ratio = power / expected_power
 
     # Define the sensitivity factor
-    sensitivity = 0.5  # orig 0.1 - Adjust this to control how quickly the tuning factor changes
+    sensitivity = 0.8  # orig 0.1 - Adjust this to control how quickly the tuning factor changes
 
     # Calculate the tuning factor using a logarithmic approach for smoother scaling
     if power_ratio >= 1:
@@ -106,7 +106,7 @@ def engine_tuning_factor(power, displacement):
         tuning_factor = 1 + sensitivity * math.log(1 / power_ratio)
 
     # Ensuring the tuning factor remains within a reasonable range
-    tuning_factor = max(0.70, min(tuning_factor, 1.15))
+    tuning_factor = max(0.60, min(tuning_factor, 1.05))
     
     return tuning_factor
 #end
@@ -171,7 +171,7 @@ while True:
     while True:
         try:
             maxrpm = int(input("Peak RPM: "))
-            if maxrpm <= 0 or maxrpm > 150:
+            if maxrpm <= 0 or maxrpm > 180:
                 print("Invalid RPM figure.")
                 continue
             break
@@ -219,7 +219,7 @@ while True:
     print(f"Engine tuning factor: {tuning_factor:.2f}")
     
     #perf figure generator, disp. mu display
-    #prev     base_performance_figure = (((engine_selected * valvetrain_selected) * displacement_mu) * tuning_factor) * aspiration_multiplier
+    #prev base_performance_figure = (((engine_selected * valvetrain_selected) * displacement_mu) * tuning_factor) * aspiration_multiplier
     base_performance_figure = (((engine_selected * valvetrain_selected) * aspiration_multiplier) * displacement_mu) * tuning_factor
     print(f"Displacement multiplier: {displacement_mu}")
     print(f"Perf figure: {base_performance_figure}")
