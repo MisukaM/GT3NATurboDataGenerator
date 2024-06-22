@@ -27,4 +27,6 @@ Stage4 - A massive turbo for maximum peak power, sacrificing all low-range torqu
 
 This leaves the stage3 single turbo and stage4 twinturbo values unused for the project, so they may even be a little unbalanced compared to their twin/single variant due to lack of testing.
 
+Additionally, the program now generates an output file, so the outputted data is stored. If you want to empty the output, simply clear it manually or input yes when the program asks to clear the log when exiting.
+
 Also thanks to Sal_89 for initially adding the GT4-specific engine/valvetrain types.
